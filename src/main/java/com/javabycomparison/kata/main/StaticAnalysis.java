@@ -2,7 +2,7 @@ package com.javabycomparison.kata.main;
 
 import com.javabycomparison.kata.analysis.ResultData;
 import com.javabycomparison.kata.analysis.ResultDataPrinter;
-import com.javabycomparison.kata.printing.CSVPrinter;
+import com.javabycomparison.kata.printing.CsvPrinter;
 import com.javabycomparison.kata.printing.ResultPrinter;
 import com.javabycomparison.kata.search.SearchClient;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class StaticAnalysis {
     if (overallResult != null) {
       ResultPrinter.printOverallResults(overallResult);
       try {
-        new CSVPrinter("output.csv").writeCSV(overallResult);
+        new CsvPrinter("output.csv").writeCsv(overallResult);
       } catch (IOException e) {
         System.err.println("Something went a bit wrong");
       }
@@ -53,27 +53,27 @@ public class StaticAnalysis {
           if (!smry) {
             System.out.println(new ResultDataPrinter().print(resultData));
           }
-          if (resultData.type == 0) {
-            javaLOC += resultData.LOC;
-            javaCommentLOC += resultData.commentLOC;
-            javaNumMethod += resultData.numMethod;
-            javanImports += resultData.nImports;
-          } else if (resultData.type == 1) {
-            pyLOC += resultData.LOC;
-            pyCommentLOC += resultData.commentLOC;
-            pyNumMethod += resultData.numMethod;
-            pynImports += resultData.nImports;
+          if (resultData.type == ResultData.ProgrammingLanguage.JAVA) {
+            javaLOC += resultData.loc;
+            javaCommentLOC += resultData.commentLoc;
+            javaNumMethod += resultData.numberOfMethods;
+            javanImports += resultData.numberOfImports;
+          } else if (resultData.type == ResultData.ProgrammingLanguage.PYTHON) {
+            pyLOC += resultData.loc;
+            pyCommentLOC += resultData.commentLoc;
+            pyNumMethod += resultData.numberOfMethods;
+            pynImports += resultData.numberOfImports;
           } else {
-            LOC += resultData.LOC;
-            commentLOC += resultData.commentLOC;
-            numMethod += resultData.numMethod;
-            nImports += resultData.nImports;
+            LOC += resultData.loc;
+            commentLOC += resultData.commentLoc;
+            numMethod += resultData.numberOfMethods;
+            nImports += resultData.numberOfImports;
           }
         }
         return new ResultData[] {
-          new ResultData(0, "Overall Java", javaLOC, javaCommentLOC, javaNumMethod, javanImports),
-          new ResultData(1, "Overall Python", pyLOC, pyCommentLOC, pyNumMethod, pynImports),
-          new ResultData(2, "Overall Other", LOC, commentLOC, numMethod, nImports),
+          new ResultData(ResultData.ProgrammingLanguage.JAVA, "Overall Java", javaLOC, javaCommentLOC, javaNumMethod, javanImports),
+          new ResultData(ResultData.ProgrammingLanguage.PYTHON, "Overall Python", pyLOC, pyCommentLOC, pyNumMethod, pynImports),
+          new ResultData(ResultData.ProgrammingLanguage.OTHER, "Overall Other", LOC, commentLOC, numMethod, nImports),
         };
       } else {
         return new ResultData[] {new ResultData()};

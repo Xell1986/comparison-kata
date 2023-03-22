@@ -2,62 +2,83 @@ package com.javabycomparison.kata.analysis;
 
 import java.util.StringJoiner;
 
+
 public class ResultData {
-  public int type;
-  public String name;
-  public int L;
-  public int LOC;
-  public int commentLOC;
-  public int numMethod;
-  public int nImports;
+    public static final String ESCAPING_BACKSLASH = "\\\\";
+    public static final String BACKSLASH = "/";
+    public ProgrammingLanguage type;
+    public String name;
+    public int uppercaseL;
+    public int loc;
+    public int commentLoc;
+    public int numberOfMethods;
+    public int numberOfImports;
 
-  public ResultData(int type, String name, int LOC, int commentLOC, int numMethod, int nImports) {
-    this.type = type;
-    this.name = name.replaceAll("\\\\", "/");
-    this.LOC = LOC;
-    this.commentLOC = commentLOC;
-    this.numMethod = numMethod;
-    this.nImports = nImports;
-  }
+    public ResultData(ProgrammingLanguage type, String name, int loc, int commentLoc, int numberOfMethods, int numberOfImports) {
+        this.type = type;
+        this.name = name.replaceAll(ESCAPING_BACKSLASH, BACKSLASH);
+        this.loc = loc;
+        this.commentLoc = commentLoc;
+        this.numberOfMethods = numberOfMethods;
+        this.numberOfImports = numberOfImports;
+    }
 
-  /*
-  public ResultData(boolean java){
-      this.javaFile = java;
+    public ResultData() {
+    }
 
-  }
-  */
-  public ResultData() {}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-    if (o == null || getClass() != o.getClass()) return false;
-    ResultData that = (ResultData) o;
-    return type == that.type
-        && L == that.L
-        && LOC == that.LOC
-        && commentLOC == that.commentLOC
-        && numMethod == that.numMethod
-        && nImports == that.nImports
-        && name.equals(that.name);
-  }
+        ResultData that = (ResultData) o;
+        return type == that.type
+                && uppercaseL == that.uppercaseL
+                && loc == that.loc
+                && commentLoc == that.commentLoc
+                && numberOfMethods == that.numberOfMethods
+                && numberOfImports == that.numberOfImports
+                && name.equals(that.name);
+    }
 
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
-  @Override
-  public String toString() {
-    return new StringJoiner(", ", ResultData.class.getSimpleName() + "[", "]")
-        .add("type=" + type)
-        .add("name='" + name + "'")
-        .add("L=" + L)
-        .add("LOC=" + LOC)
-        .add("commentLOC=" + commentLOC)
-        .add("numMethod=" + numMethod)
-        .add("nImports=" + nImports)
-        .toString();
-  }
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", ResultData.class.getSimpleName() + "[", "]")
+                .add("type=" + type)
+                .add("name='" + name + "'")
+                .add("L=" + uppercaseL)
+                .add("LOC=" + loc)
+                .add("commentLOC=" + commentLoc)
+                .add("numMethod=" + numberOfMethods)
+                .add("nImports=" + numberOfImports)
+                .toString();
+    }
+
+    public static enum ProgrammingLanguage {
+        JAVA("Java"),
+        PYTHON("Python"),
+        OTHER("other");
+
+        private String printableRepresentation;
+
+        ProgrammingLanguage(String printableRepresentation) {
+            this.printableRepresentation = printableRepresentation;
+        }
+
+        @Override
+        public String toString() {
+            return this.printableRepresentation;
+        }
+    }
+
 }

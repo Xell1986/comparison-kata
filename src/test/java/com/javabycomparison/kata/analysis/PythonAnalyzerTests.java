@@ -20,11 +20,11 @@ class PythonAnalyzerTests {
   void analyzePythonFile() {
     Assertions.assertEquals(
         pythonResult,
-        new ResultData(1, "./src/main/resources/python_files/function.py", 16, 3, 3, 0));
+        new ResultData(ResultData.ProgrammingLanguage.PYTHON, "./src/main/resources/python_files/function.py", 16, 3, 3, 0));
   }
 
   @Test
   void analyzeFractionOfComments() {
-    Assertions.assertEquals(5.66, (float) pythonResult.LOC / pythonResult.commentLOC, 1.5);
+    Assertions.assertEquals(5.66, (float) pythonResult.loc / pythonResult.commentLoc, 1.5);
   }
 }

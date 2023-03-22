@@ -6,6 +6,10 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class PythonAnalyzer implements Analyzer {
+  public static final String IMPORT_STATEMENT = "import";
+  public static final String FROM_STATEMENT = "from";
+  public static final String LINE_COMMENT = "#";
+  public static final String METHOD_DEFINITION = "def";
   private final Path file;
 
   public PythonAnalyzer(Path file) {
@@ -14,34 +18,32 @@ public class PythonAnalyzer implements Analyzer {
 
   @Override
   public ResultData analyze() throws IOException {
-    int number_of_imports = 0;
-    int lines_of_code = 0;
-    int number_of_methods = 0;
-    int comment_lines_of_code = 0;
+    int numberOfImports = 0;
+    int loc = 0;
+    int numberOfMethods = 0;
+    int commentsLoc = 0;
 
-    List<String> file_contents = Files.readAllLines(this.file);
-    for (String line : file_contents) {
-      lines_of_code += 1;
-      if (line.trim().startsWith("import")) {
-        number_of_imports += 1;
+    List<String> fileContents = Files.readAllLines(this.file);
+    for (String line : fileContents) {
+      loc += 1;
+      if (line.trim().startsWith(IMPORT_STATEMENT)) {
+        numberOfImports += 1;
       }
-      if (line.trim().startsWith("from")) {
-        number_of_imports += 1;
-        // In Python a comment starts with '#'
-      } else if (line.trim().startsWith("#")) {
-        comment_lines_of_code += 1;
-        // In Python a method is defined with 'def'
-      } else if (line.trim().startsWith("def")) {
-        number_of_methods += 1;
+      if (line.trim().startsWith(FROM_STATEMENT)) {
+        numberOfImports += 1;
+      } else if (line.trim().startsWith(LINE_COMMENT)) {
+        commentsLoc += 1;
+      } else if (line.trim().startsWith(METHOD_DEFINITION)) {
+        numberOfMethods += 1;
       }
     }
 
     return new ResultData(
-        1,
+        ResultData.ProgrammingLanguage.PYTHON,
         this.file.toString(),
-        lines_of_code,
-        comment_lines_of_code,
-        number_of_methods,
-        number_of_imports);
+        loc,
+        commentsLoc,
+        numberOfMethods,
+        numberOfImports);
   }
 }

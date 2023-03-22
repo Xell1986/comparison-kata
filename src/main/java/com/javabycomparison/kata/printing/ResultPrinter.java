@@ -10,8 +10,8 @@ public class ResultPrinter {
   private static final String LANGUAGE = "  Language";
   private static final String LOC = "  Lines of Code";
   private static final String COMMENT_LOC = "  Number of Comments";
-  private static final String NUM_METHODS = "  Number of Methods";
-  private static final String N_IMPORTS = "  Number of Imports";
+  private static final String NUMBER_OF_METHODS = "  Number of Methods";
+  private static final String NUMBER_OF_IMPORTS = "  Number of Imports";
 
   public static void printOverallResults(ResultData[] overallResult) {
 
@@ -62,8 +62,8 @@ public class ResultPrinter {
             String.join(
                 "",
                 Collections.nCopies(
-                    Math.max(calculateNumMethodsLength(r1, r2) - NUM_METHODS.length(), 0), " ")))
-        .append(NUM_METHODS);
+                    Math.max(calculateNumMethodsLength(r1, r2) - NUMBER_OF_METHODS.length(), 0), " ")))
+        .append(NUMBER_OF_METHODS);
     stringBuilderForFirstResult.append(
         rdp.printNumMethodLOC(r1, calculateNumMethodsLength(r1, r2)));
     stringBuilderForSecondResult.append(
@@ -73,8 +73,8 @@ public class ResultPrinter {
             String.join(
                 "",
                 Collections.nCopies(
-                    Math.max(calculateNImportsLength(r1, r2) - N_IMPORTS.length(), 0), " ")))
-        .append(N_IMPORTS);
+                    Math.max(calculateNImportsLength(r1, r2) - NUMBER_OF_IMPORTS.length(), 0), " ")))
+        .append(NUMBER_OF_IMPORTS);
     stringBuilderForFirstResult.append(rdp.printNImportsLOC(r1, calculateNImportsLength(r1, r2)));
     stringBuilderForSecondResult.append(rdp.printNImportsLOC(r2, calculateNImportsLength(r1, r2)));
     System.out.println(stringBuilderForHeader.toString());
@@ -90,8 +90,8 @@ public class ResultPrinter {
   }
 
   private static int calculateLanguageLength(ResultData r1, ResultData r2) {
-    String languageR1 = (r1.type == 0) == true ? "Java" : "Python";
-    String languageR2 = (r2.type == 0) == true ? "Java" : "Python";
+    String languageR1 = (r1.type == ResultData.ProgrammingLanguage.JAVA) ? "Java" : "Python";
+    String languageR2 = (r2.type == ResultData.ProgrammingLanguage.JAVA) ? "Java" : "Python";
 
     // returns the length of the longest string of the three
     return Math.max(Math.max(languageR1.length(), languageR2.length()), LANGUAGE.length());
@@ -100,27 +100,27 @@ public class ResultPrinter {
   private static int calculateLOCLength(ResultData r1, ResultData r2) {
     // returns the length of the longest string of the three
     return Math.max(
-        Math.max(String.valueOf(r1.LOC).length(), String.valueOf(r2.LOC).length()), LOC.length());
+        Math.max(String.valueOf(r1.loc).length(), String.valueOf(r2.loc).length()), LOC.length());
   }
 
   private static int calculateCommentLOCLength(ResultData r1, ResultData r2) {
     // returns the length of the longest string of the three
     return Math.max(
-        Math.max(String.valueOf(r1.commentLOC).length(), String.valueOf(r2.commentLOC).length()),
+        Math.max(String.valueOf(r1.commentLoc).length(), String.valueOf(r2.commentLoc).length()),
         COMMENT_LOC.length());
   }
 
   private static int calculateNumMethodsLength(ResultData r1, ResultData r2) {
     // returns the length of the longest string of the three
     return Math.max(
-        Math.max(String.valueOf(r1.numMethod).length(), String.valueOf(r2.numMethod).length()),
-        NUM_METHODS.length());
+        Math.max(String.valueOf(r1.numberOfMethods).length(), String.valueOf(r2.numberOfMethods).length()),
+        NUMBER_OF_METHODS.length());
   }
 
   private static int calculateNImportsLength(ResultData r1, ResultData r2) {
     // returns the length of the longest string of the three
     return Math.max(
-        Math.max(String.valueOf(r1.nImports).length(), String.valueOf(r2.nImports).length()),
-        N_IMPORTS.length());
+        Math.max(String.valueOf(r1.numberOfImports).length(), String.valueOf(r2.numberOfImports).length()),
+        NUMBER_OF_IMPORTS.length());
   }
 }
